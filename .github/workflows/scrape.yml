@@ -27,7 +27,7 @@ jobs:
         run: ls -l  # Debugging to check if news_output.json exists
 
       - name: Upload JSON output as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: news_output
           path: news_output.json
