@@ -1,25 +1,35 @@
-name: Run BIZZStat every 10 minutes
+name: Manual News Scraper
 
 on:
-  schedule:
-    - cron: '*/10 * * * *'  # Every 10 minutes
-  workflow_dispatch:       # Allow manual run too
+  workflow_dispatch:
 
 jobs:
-  run-script:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
 
-      - name: Run BIZZStat.py
+      - name: Run scraper
         run: python BIZZStat.py
+
+      - name: List files (for debugging)
+        run: ls -l  # Debugging to check if news_output.json exists
+
+      - name: Upload JSON output as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: news_output
+          path: news_output.json
+
+     
